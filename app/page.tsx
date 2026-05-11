@@ -9,6 +9,16 @@ const problemCards = [
   "Manual review notes get scattered.",
 ];
 
+const heroMockSnapshot = {
+  severity: { critical: 4, serious: 9, moderate: 10, minor: 4 },
+} as const;
+
+const heroIssueTotal =
+  heroMockSnapshot.severity.critical +
+  heroMockSnapshot.severity.serious +
+  heroMockSnapshot.severity.moderate +
+  heroMockSnapshot.severity.minor;
+
 const categories = [
   "Missing alt text",
   "Low contrast",
@@ -52,12 +62,12 @@ export default function Home() {
         <aside className="report-card rounded-xl border border-slate-200 p-5 shadow-lg">
           <p className="text-sm font-medium text-slate-600">Scan: harborandpinebakery.com</p>
           <h2 className="mt-2 text-xl font-semibold">Accessibility snapshot</h2>
-          <p className="mt-1 text-3xl font-bold text-slate-900">27 issues found</p>
+          <p className="mt-1 text-3xl font-bold text-slate-900">{heroIssueTotal} issues found</p>
           <dl className="mt-4 grid grid-cols-2 gap-2 text-sm">
-            <div className="rounded bg-red-100 p-2"><dt>Critical</dt><dd className="font-semibold">4</dd></div>
-            <div className="rounded bg-orange-100 p-2"><dt>Serious</dt><dd className="font-semibold">9</dd></div>
-            <div className="rounded bg-amber-100 p-2"><dt>Moderate</dt><dd className="font-semibold">10</dd></div>
-            <div className="rounded bg-blue-100 p-2"><dt>Minor</dt><dd className="font-semibold">4</dd></div>
+            <div className="rounded bg-red-100 p-2"><dt>Critical</dt><dd className="font-semibold">{heroMockSnapshot.severity.critical}</dd></div>
+            <div className="rounded bg-orange-100 p-2"><dt>Serious</dt><dd className="font-semibold">{heroMockSnapshot.severity.serious}</dd></div>
+            <div className="rounded bg-amber-100 p-2"><dt>Moderate</dt><dd className="font-semibold">{heroMockSnapshot.severity.moderate}</dd></div>
+            <div className="rounded bg-blue-100 p-2"><dt>Minor</dt><dd className="font-semibold">{heroMockSnapshot.severity.minor}</dd></div>
           </dl>
           <h3 className="mt-4 font-semibold">Top issues</h3>
           <ul className="list-disc space-y-1 pl-5 text-sm text-slate-700">
@@ -123,7 +133,7 @@ export default function Home() {
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <div>
               <h4 className="font-semibold">Severity breakdown</h4>
-              <p>Critical: 4 • Serious: 9 • Moderate: 10 • Minor: 4</p>
+              <p>Critical: {heroMockSnapshot.severity.critical} • Serious: {heroMockSnapshot.severity.serious} • Moderate: {heroMockSnapshot.severity.moderate} • Minor: {heroMockSnapshot.severity.minor}</p>
             </div>
             <div>
               <h4 className="font-semibold">Included sections</h4>

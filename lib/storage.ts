@@ -8,6 +8,7 @@ import {
 } from "@/lib/types";
 
 const STORAGE_KEY = "accesspatch-db-v1";
+let fallbackIdCounter = 0;
 
 const demoIssues = [
   {
@@ -158,11 +159,21 @@ const seededDb: AccessPatchDb = {
 };
 
 function createId(prefix: string) {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return `${prefix}-${crypto.randomUUID()}`;
+  const webCrypto = globalThis.crypto;
+
+  if (webCrypto?.randomUUID) {
+    return `${prefix}-${webCrypto.randomUUID()}`;
   }
 
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  if (webCrypto) {
+    const bytes = new Uint8Array(8);
+    webCrypto.getRandomValues(bytes);
+    const token = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `${prefix}-${token}`;
+  }
+
+  fallbackIdCounter += 1;
+  return `${prefix}-${Date.now().toString(36)}-${fallbackIdCounter.toString(36)}`;
 }
 
 function cloneSeededDb(): AccessPatchDb {
